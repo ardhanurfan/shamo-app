@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shamoapp/models/user_model.dart';
+import 'package:shamoapp/providers/auth_provider.dart';
 import 'package:shamoapp/shared/theme.dart';
 
 class EditProfilePage extends StatelessWidget {
@@ -6,6 +9,18 @@ class EditProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AuthProvider authProvider = Provider.of<AuthProvider>(context);
+    UserModel user = authProvider.user;
+
+    TextEditingController emailController =
+        TextEditingController(text: user.email);
+
+    TextEditingController fullnameController =
+        TextEditingController(text: user.name);
+
+    TextEditingController usernameController =
+        TextEditingController(text: user.username);
+
     PreferredSizeWidget header() {
       return AppBar(
         toolbarHeight: 70,
@@ -44,11 +59,10 @@ class EditProfilePage extends StatelessWidget {
               ),
             ),
             TextFormField(
+              controller: fullnameController,
               style: primaryTextStyle,
               cursorColor: primaryColor,
               decoration: InputDecoration(
-                hintText: 'Alexis Sanchez',
-                hintStyle: primaryTextStyle,
                 border: UnderlineInputBorder(
                   borderSide: BorderSide(
                     color: subtitleColor,
@@ -79,11 +93,10 @@ class EditProfilePage extends StatelessWidget {
               ),
             ),
             TextFormField(
+              controller: usernameController,
               style: primaryTextStyle,
               cursorColor: primaryColor,
               decoration: InputDecoration(
-                hintText: '@alexis',
-                hintStyle: primaryTextStyle,
                 border: UnderlineInputBorder(
                   borderSide: BorderSide(
                     color: subtitleColor,
@@ -114,11 +127,10 @@ class EditProfilePage extends StatelessWidget {
               ),
             ),
             TextFormField(
+              controller: emailController,
               style: primaryTextStyle,
               cursorColor: primaryColor,
               decoration: InputDecoration(
-                hintText: 'alexis@gmail.com',
-                hintStyle: primaryTextStyle,
                 border: UnderlineInputBorder(
                   borderSide: BorderSide(
                     color: subtitleColor,
@@ -149,7 +161,8 @@ class EditProfilePage extends StatelessWidget {
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 image: DecorationImage(
-                  image: AssetImage('assets/image_profile.png'),
+                  fit: BoxFit.cover,
+                  image: NetworkImage(user.profilePhotoUrl),
                 ),
               ),
             ),

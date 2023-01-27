@@ -1,6 +1,8 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shamoapp/providers/auth_provider.dart';
+import 'package:shamoapp/providers/product_provider.dart';
+import 'package:shamoapp/services/auth_service.dart';
 import 'package:shamoapp/shared/theme.dart';
 
 class SplashPage extends StatefulWidget {
@@ -13,10 +15,25 @@ class SplashPage extends StatefulWidget {
 class _SplashPageState extends State<SplashPage> {
   @override
   void initState() {
-    Timer(const Duration(seconds: 3), () {
-      Navigator.pushNamedAndRemoveUntil(context, '/sign-in', (route) => false);
-    });
+    getInit();
     super.initState();
+  }
+
+  getInit() async {
+    final navigator = Navigator.of(context);
+    AuthProvider authProvider =
+        Provider.of<AuthProvider>(context, listen: false);
+    await Provider.of<ProductProvider>(context, listen: false).getProducts();
+    final String? token = await AuthService().getTokenPreference();
+    if (token == null) {
+      navigator.pushNamedAndRemoveUntil('/sign-in', (route) => false);
+    } else {
+      if (await authProvider.getUser(token: token)) {
+        navigator.pushNamedAndRemoveUntil('/home', (route) => false);
+      } else {
+        navigator.pushNamedAndRemoveUntil('/sign-in', (route) => false);
+      }
+    }
   }
 
   @override

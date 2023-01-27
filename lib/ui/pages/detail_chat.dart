@@ -159,7 +159,7 @@ class DetailChat extends StatelessWidget {
         padding: EdgeInsets.symmetric(
           horizontal: defaultMargin,
         ),
-        children: [
+        children: const [
           ChatBubble(
             isSender: true,
             text: 'Hi, This item is still available?',

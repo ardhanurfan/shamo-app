@@ -79,7 +79,7 @@ class CartPage extends StatelessWidget {
     Widget content() {
       return ListView(
         padding: EdgeInsets.symmetric(horizontal: defaultMargin),
-        children: [
+        children: const [
           CartCard(),
           CartCard(),
           CartCard(),
